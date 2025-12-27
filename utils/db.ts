@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export async function connectDB() {
     if(mongoose.connection.readyState){
-        console.log("MongoDB Connected\n Returning...\n");
+        console.log("MongoDB Connected\nReturning...\n");
         return;
     }
     if (!process.env.MONGODB_URI) {

@@ -6,12 +6,22 @@ interface RenderPostProps {
     post: Posts
 }
 
-export const RenderPost = ({ post }: RenderPostProps) => {
+const RenderPost = ({ post }: RenderPostProps) => {
     return (
-        <Link href={`/posts/${post._id}`}>
-            <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{post.title}</h3>
-                <p className="text-sm text-gray-600 line-clamp-2">{post.description}</p>
+        <Link href={`/posts/${post._id}`} className="block h-full">
+            <div className="h-full p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 flex flex-col">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                    {post.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-4 grow">
+                    {post.description}
+                </p>
+                <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-auto pt-4 border-t border-gray-100 dark:border-gray-700">
+                    <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+                    <span className="flex items-center gap-1">
+                        💬 {post.comments.length} comments
+                    </span>
+                </div>
             </div>
         </Link>
     )
@@ -38,11 +48,17 @@ const RenderPosts = () => {
     }, [])
 
     if (loading) {
-        return <div className="text-center text-gray-500">Loading posts...</div>
+        return (
+            <div className="grid mt-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-48 bg-gray-200 dark:bg-gray-800 rounded-xl animate-pulse"></div>
+                ))}
+            </div>
+        )
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid mt-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((item) => <RenderPost key={item._id.toString()} post={item} />)}
         </div>
     )
