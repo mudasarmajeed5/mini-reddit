@@ -1,3 +1,4 @@
+import EditTitle from "@/components/edit-title";
 import RenderComments from "@/components/render-comments";
 import Post from "@/models/posts";
 import { Posts } from "@/types";
@@ -34,19 +35,27 @@ export default async function ViewPost({ params }: ViewPostProps) {
             <div className="w-4/5 mx-auto mt-6">
                 {/* Post */}
                 <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 mb-6 transition-colors duration-300">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3 transition-colors">{safePost.title}</h1>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 transition-colors">
-                        Posted on {new Date(safePost.createdAt).toLocaleDateString()}
+                    <EditTitle
+                        initialTitle={safePost.title}
+                        postId={postid}
+                        key={postid}
+                    />
+                    <p className="text-sm my-2 text-right text-gray-500 dark:text-gray-400 ml-2 transition-colors">
+                        Updated on {new Date(safePost.updatedAt).toLocaleDateString()}
                     </p>
                     <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg transition-colors">{safePost.description}</p>
                 </div>
 
                 {/* Comments section */}
                 <div className="text-gray-700 dark:text-gray-300 transition-colors">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 transition-colors">Comments</h2>
-                    <RenderComments comments={safePost.comments} />
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 transition-colors">Comments
+                        <span className="text-sm ml-3 text-gray-500">
+                            ({safePost.comments.length})
+                        </span>
+                    </h2>
+                    <RenderComments postId={postid} comments={safePost.comments} />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
